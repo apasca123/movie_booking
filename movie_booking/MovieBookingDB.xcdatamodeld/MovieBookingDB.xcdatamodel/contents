@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="24A348" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Cinema" representedClassName="Cinema" syncable="YES" codeGenerationType="class">
+        <attribute name="cinemaID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="location" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="hall" optional="YES" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="Hall" inverseName="cinema" inverseEntity="Hall"/>
+    </entity>
+    <entity name="FoodItem" representedClassName="FoodItem" syncable="YES" codeGenerationType="class">
+        <attribute name="fooditemID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="orderdetails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OrderDetails" inverseName="fooditem" inverseEntity="OrderDetails"/>
+    </entity>
+    <entity name="Hall" representedClassName="Hall" syncable="YES" codeGenerationType="class">
+        <attribute name="capacity" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="hallID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="cinema" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Cinema" inverseName="hall" inverseEntity="Cinema"/>
+        <relationship name="showtime" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ShowTime" inverseName="hall" inverseEntity="ShowTime"/>
+    </entity>
+    <entity name="Movie" representedClassName="Movie" syncable="YES" codeGenerationType="class">
+        <attribute name="duration" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="movieDescription" optional="YES" attributeType="String"/>
+        <attribute name="movieID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="trailerURL" optional="YES" attributeType="URI"/>
+        <relationship name="showtime" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ShowTime" inverseName="movie" inverseEntity="ShowTime"/>
+    </entity>
+    <entity name="Order" representedClassName="Order" syncable="YES" codeGenerationType="class">
+        <attribute name="orderID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="orderTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
+        <relationship name="orderdetails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OrderDetails" inverseName="order" inverseEntity="OrderDetails"/>
+        <relationship name="showtime" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShowTime" inverseName="order" inverseEntity="ShowTime"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="order" inverseEntity="User"/>
+    </entity>
+    <entity name="OrderDetails" representedClassName="OrderDetails" syncable="YES" codeGenerationType="class">
+        <attribute name="orderDetailsID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Decimal" defaultValueString="0"/>
+        <relationship name="fooditem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FoodItem" inverseName="orderdetails" inverseEntity="FoodItem"/>
+        <relationship name="order" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Order" inverseName="orderdetails" inverseEntity="Order"/>
+    </entity>
+    <entity name="ShowTime" representedClassName="ShowTime" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="endTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="showTimeID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="startTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="hall" maxCount="1" deletionRule="Nullify" destinationEntity="Hall" inverseName="showtime" inverseEntity="Hall"/>
+        <relationship name="movie" maxCount="1" deletionRule="Nullify" destinationEntity="Movie" inverseName="showtime" inverseEntity="Movie"/>
+        <relationship name="order" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Order" inverseName="showtime" inverseEntity="Order"/>
+        <relationship name="ticket" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Ticket" inverseName="showtime" inverseEntity="Ticket"/>
+    </entity>
+    <entity name="Ticket" representedClassName="Ticket" syncable="YES" codeGenerationType="class">
+        <attribute name="datePurchased" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="seatNumber" optional="YES" attributeType="String"/>
+        <attribute name="ticketID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="showtime" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShowTime" inverseName="ticket" inverseEntity="ShowTime"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="ticket" inverseEntity="User"/>
+    </entity>
+    <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
+        <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="password" optional="YES" attributeType="String"/>
+        <attribute name="userID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+        <relationship name="order" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Order" inverseName="user" inverseEntity="Order"/>
+        <relationship name="ticket" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Ticket" inverseName="user" inverseEntity="Ticket"/>
+    </entity>
+</model>
